@@ -42,6 +42,7 @@ jobs:
           script-name: main.py
           standalone: true
           onefile: true
+          onefile-tempdir-spec: "adb-wireless-helper"
           deployment: true
           disable-console: false
           windows-icon-from-ico: icon/icon.ico
