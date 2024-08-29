@@ -53,6 +53,10 @@ jobs:
           cp build/main.exe zipped/main.exe
         shell: bash
 
+      - name: Zip dist
+        run: |
+          python -c "import zipfile,shutil; shutil.make_archive('dist', 'zip', 'dist')"
+
       - name: Zip onefile
         run: |
           python -c "import zipfile,shutil; shutil.make_archive('onefile', 'zip', 'zipped')"
@@ -63,6 +67,7 @@ jobs:
           artifacts: |
             build/*.exe
             onefile.zip
+            dist.zip
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: latest
           name: Automatic Build
