@@ -46,10 +46,10 @@ jobs:
           disable-console: false
           windows-icon-from-ico: icon/icon.ico
 
-      - name: Move files
+      - name: Setting up files
         run: |
           mkdir -p zipped
-          mv build/main.exe zipped/main.exe
+          cp build/main.exe zipped/main.exe
         shell: bash
 
       - name: Zip onefile
