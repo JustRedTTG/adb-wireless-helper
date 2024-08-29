@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          path:  /github/workspace/src
+          path:  src
 
       - name: Package Application
         uses: JackMcKew/pyinstaller-action-windows@main
