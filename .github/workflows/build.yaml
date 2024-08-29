@@ -1,27 +1,70 @@
-name: Package Application with Pyinstaller
+name: Executable Build
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
+    paths:
+      - '*.py'
+      - '.github/workflows/build.yml'
+
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+    permissions:
+      contents: write
 
     steps:
-      - uses: actions/checkout@v2
-        with:
-          path:  src
 
-      - name: Package Application
-        uses: JackMcKew/pyinstaller-action-windows@main
-        with:
-          path: src
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - uses: actions/upload-artifact@v2
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          name: name-of-artifact
-          path: src/dist/windows
+          python-version: '3.11'
+          architecture: 'x64'
+          cache: 'pip'
+          cache-dependency-path: |
+            **/requirements*.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build Executable with Nuitka
+        uses: Nuitka/Nuitka-Action@main
+        with:
+          company-name: "RedTTG"
+          product-name: "ADB Wireless Helper"
+          product-version: "1.0"
+          script-name: main.py
+          standalone: true
+          onefile: true
+          deployment: true
+          disable-console: false
+          windows-icon-from-ico: icon/icon.ico
+
+      - name: Move files
+        run: |
+          mkdir -p zipped
+          mv build/main.exe zipped/main.exe
+        shell: bash
+
+      - name: Zip onefile
+        run: |
+          python -c "import zipfile,shutil; shutil.make_archive('onefile', 'zip', 'zipped')"
+
+      - name: Update release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: |
+            build/*.exe
+            onefile.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: latest
+          name: Automatic Build
+          body: Windows ADB Wireless Helper by RedTTG
+          prerelease: false
+          allowUpdates: true
