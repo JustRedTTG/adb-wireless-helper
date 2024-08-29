@@ -13,13 +13,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          path: src
 
       - name: Package Application
         uses: JackMcKew/pyinstaller-action-windows@main
-        with:
-          path: ""
 
       - uses: actions/upload-artifact@v2
         with:
           name: name-of-artifact
-          path: dist/windows
+          path: src/dist/windows
