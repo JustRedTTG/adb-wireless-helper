@@ -55,7 +55,7 @@ jobs:
 
       - name: Zip dist
         run: |
-          python -c "import zipfile,shutil; shutil.make_archive('dist', 'zip', 'dist')"
+          python -c "import zipfile,shutil; shutil.make_archive('dist', 'zip', 'build/main.dist')"
 
       - name: Zip onefile
         run: |
