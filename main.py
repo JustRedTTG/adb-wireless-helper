@@ -125,9 +125,12 @@ os.chdir(os.path.dirname(adb_path))
 device = adb.wait_for_device("Please connect your device through USB")
 device.work()
 connection_ip = device.ip
+
 print(adb.run_adb_command(('tcpip', '5555')))
-time.sleep(5)  # Accounting for delay when using tcpip in adb
+time.sleep(5)  # Accounting for delay when using adb
 
 adb.wait_for_no_devices()
+time.sleep(2)  # Accounting for delay when using adb
+
 adb.run_adb_command(('connect', connection_ip))
 device = adb.wait_for_device("Device should connect wirelessly", require_wireless=True)
