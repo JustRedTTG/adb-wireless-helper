@@ -2,7 +2,7 @@ import subprocess
 import time
 from typing import List, Tuple, Union
 
-from helper import get_waiting
+from helper import get_waiting, exit_program
 
 
 class Device:
@@ -29,7 +29,7 @@ class Device:
             return info.split('inet ')[1].split('/')[0]
         except IndexError:
             print("Could not find IP address of the device!")
-            exit()
+            exit_program()
 
     def vibrate(self):
         # This might not work on all devices
@@ -83,7 +83,7 @@ def wait_for_device(prompt: str, confirm: bool = True, require_wireless: bool = 
         elif device.wireless:
             print(f"You've connected the device wirelessly! IP: {device.serial}")
             device.vibrate()
-            exit()
+            exit_program()
 
 
     return device

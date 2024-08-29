@@ -8,6 +8,8 @@ import adb_communication as adb
 from tqdm import tqdm
 from colorama import Fore, Style, Back
 
+from helper import exit_program
+
 colorama.init()
 
 # Settings
@@ -105,14 +107,16 @@ for pid in PIDS:
             break
 else:
     PROGRESS.write("ADB not found")
-    exit()
+    PROGRESS.close()
+    exit_program()
 if not confirmed:
     PROGRESS.write("No ADB path confirmed")
-    exit()
+    PROGRESS.close()
+    exit_program()
 else:
     PROGRESS.set_description(f"ADB path confirmed! ")
     PROGRESS.update(PROGRESS.total - PROGRESS.n)
-PROGRESS.close()
+    PROGRESS.close()
 
 print("\nUsing ADB in:", ADB_PATH.format(adb_path))
 
